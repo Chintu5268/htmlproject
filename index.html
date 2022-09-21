@@ -181,5 +181,175 @@ return false</pre>
     BinaryTree tree = makeTree();
     System.out.println(solvable(tree));
 }</pre>
+<p>And finally, here's the recursive backtracking routine to "solve" the binary tree by finding a goal node</p>
+<pre> static boolean solvable(BinaryTree node) {
+    /* 1 */  if (node == null) return false;
+    /* 2 */  if (node.isGoalNode) return true;
+    /* 3 */  if (solvable(node.leftChild)) return true;
+    /* 4 */  if (solvable(node.rightChild)) return true;
+    /* 5 */  return false;
+        }</pre>
+        <p>Here's what the numbered lines are doing:</p>
+        <ol>
+          <li>
+            If we are given a null node, it's not solvable. This statement is so that we can call this method with the children of a node, without first checking whether those children actually exist</li>
+            <li>If the node we are given is a goal node, return success</li>
+            <li>
+              See if the left child of node is solvable, and if so, conclude that node is solvable. We will only get to this line if <span style="color: #660000;">node</span> is non-null and is not a goal <span style="color: #660000;">node</span>, says to</li>
+            <li>Do the same thing for the right child</li>
+            <li>
+              Since neither child of <span style="color: #660000;">node</span> is solvable, <span style="color: #660000;">node</span> itself is not solvable</li>
+        </ol>
+        <p>This program runs correctly and produces the unenlightening result <span style="color: #660000;">true</span></p>
+        <p>
+          Each time we ask for another node, we have to check if it is null. In the above we put that check as the first thing in<span style="color: #660000;">solvable</span> . An alternative would be to check first whether each child exists, and recur only if they do. Here's that alternative version:</p>
+          <pre> static boolean solvable(BinaryTree node) {
+            if (node.isGoalNode) return true;
+            if (node.leftChild != null && solvable(node.leftChild)) return true;
+            if (node.rightChild != null && solvable(node.rightChild)) return true;
+            return false;
+        }</pre>
+        <p>
+          I think the first version is simpler, but the second version is slightly more efficient.</p>
+          <h3>What are the children?</h3>
+          <p>One of the things that simplifies the above binary tree search is that, at each choice point, you can ignore all the previous choices. Previous choices don't give you any information about what you should do next; as far as you know, both the left and the right child are possible solutions. In many problems, however, you may be able to eliminate children immediately, without recursion</p>
+          <p>
+            Consider, for example, the problem of four-coloring a map. It is a theorem of mathematics that any map on a plane, no matter how convoluted the countries are, can be colored with at most four colors, so that no two countries that share a border are the same color</p>
+            <p>
+              To color a map, you choose a color for the first country, then a color for the second country, and so on, until all countries are colored. There are two ways to do this</p>
+              <ul type="disk">
+                <b>Method 1.</b>Try each of the four possible colors, and recur. When you run out of countries, check whether you are at a goal node.<br>
+                <b>Method 2.</b>Try only those colors that have not already been used for an adjacent country, and recur. If and when you run out of countries, you have successfully colored the map.
+              </ul>
+              <p>Let's apply each of these two methods to the problem of coloring a checkerboard. This should be easily solvable; after all, a checkerboard only needs two colors.</p>
+              <p>In both methods, the colors are represented by integers, from <span style="color: #660000;">RED=1</span> to <span style="color: #660000;">BLUE=4</span>. We define the following helper methods. The helper method code isn't displayed here because it's not important for understanding the method that does the backtracking</p>
+              <dl>
+                <dt>
+                <span style="color: #660000;">  boolean mapIsOK()</span>
+                </dt>
+                <dd>Used by method 1 to check (at a leaf node) whether the entire map is colored correctly</dd>
+              </dl>
+              <dl>
+                <dt>
+                <span style="color: #660000;">
+                  boolean okToColor(int row, int column, int color)</span>
+                </dt>
+                <dd>
+                  Used by method 2 to check, at every node, whether there is an adjacent node already colored with the given color</dd>
+              </dl>
+              <dl>
+                <dt>
+                
+                    int[] nextRowAndColumn(int row, int column)
+                </dt>
+                <dd>
+                  Used by both methods to find the next "country" (actually, the row and column of the next square on the checkerboard).</dd>
+              </dl>
+              <p>Here's the code for method 1:</p>
+              <pre> boolean explore1(int row, int column, int color) {
+                if (row >= NUM_ROWS) return mapIsOK();
+                map[row][column] = color;
+                for (int nextColor = RED; nextColor <= BLUE; nextColor++) {
+                    int[] next = nextRowAndColumn(row, column);
+                    if (explore1(next[0], next[1], nextColor)) return true;
+                }
+                return false;
+            }</pre>
+            <p>And here's the code for method 2</p>
+            <pre> boolean explore2(int row, int column, int color) {
+              if (row >= NUM_ROWS) return true;
+              if (okToColor(row, column, color)) {
+                  map[row][column] = color;
+                  for (int nextColor = RED; nextColor <= BLUE; nextColor++) {
+                      int[] next = nextRowAndColumn(row, column);
+                      if (explore2(next[0], next[1], nextColor)) return true;
+                  }
+              }
+              return false;
+          }</pre>
+          <p>
+            Those appear pretty similar, and you might think they are equally good. However, the timing information suggests otherwise:</p>
+            <table border="1px" align="center">
+              <tr>
+                <td></td>
+                <td>2 by 3 map</td>
+                <td>3 by 3 map</td>
+                <td>3 by 4 map</td>
+              </tr>
+              <tr>
+                <td>Method 1:</td>
+                <td>60 ms.</td>
+                <td>940 ms.</td>
+                <td>60530 ms.(1 minute)</td>
+              </tr>
+              <tr>
+                <td>Method 2:</td>
+                <td>0 ms.</td>
+                <td>0 ms.</td>
+                <td>0 ms.</td>
+              </tr>
+            </table>
+<p>The zeros in the above table indicate times too short to measure (less than 1 millisecond). Why this huge difference? Either of these methods could have exponential growth. Eliminating a node automatically eliminates all of its descendents, and this will often prevent exponential growth. Conversely, by waiting to check until a leaf node is reached, exponential growth is practically guaranteed. <b>If there is any way to eliminate children (reduce the set of choices), do so!</b></p>
+<h3>Debugging techniques</h3>
+<p>Often our first try at a program doesn't work, and we need to debug it. Debuggers are helpful, but sometimes we need to fall back on inserting print statements. There are some simple tricks to making effective use of print statements. These tricks can be applied to any program, but are especially useful when you are trying to debug recursive routines</p>
+<p><b>Trick #1: Indent when you print method entries and exits.</b> Often, the best debugging technique is to print every method call and return (or at least the most important ones). You probably want to print, for each method, what parameters it came in with, and what value it leaves with. However, if you just print a long list of these, it's hard to match up method exits with their corresponding entries. Indenting to show the level of nesting can help.</p>
+<p><b>Trick #2: Use specialized print methods for debugging.</b> Don't clutter up your actual code more than you must. Also, remember that code inserted for debugging purposes can itself contain bugs, or (in the worst case) can affect the results, so be very careful with it</p>
+<p>Here's our debugging code. For this trivial program, there's almost more debugging code than actual code, but in larger programs the proportions will be better</p>
+<pre>
+  static String name(BinaryTree node) {
+    if (node == null) return null;
+    else return node.name;
+}
+static void enter(BinaryTree node) {
+    System.out.println(indent + "Entering solvable(" + name(node) + ")");
+    indent = indent + "|  ";
+}
+static boolean yes(BinaryTree node) {
+    indent = indent.substring(3);
+    System.out.println(indent + "solvable(" + name(node) + ") returns true");
+    return true;
+}
+static boolean no(BinaryTree node) {
+    indent = indent.substring(3);
+    System.out.println(indent + "solvable(" + name(node) + ") returns false");
+    return false;
+}
+</pre>
+<p>To use this code, we modify solvable as follows:</p>
+<pre>static boolean solvable(BinaryTree node) {
+  enter(node);
+  if (node == null) return no(node);
+  if (node.isGoalNode) return yes(node);
+  if (solvable(node.leftChild)) return yes(node);
+  if (solvable(node.rightChild)) return yes(node);
+  return no(node);
+}</pre>
+<p>And we get these results:</p>
+<pre style="color: black;">
+  <b> Entering solvable(Root)
+    |  Entering solvable(A)
+    |  |  Entering solvable(C)
+    |  |  |  Entering solvable(null)
+    |  |  |  solvable(null) returns false
+    |  |  |  Entering solvable(null)
+    |  |  |  solvable(null) returns false
+    |  |  solvable(C) returns false
+    |  |  Entering solvable(D)
+    |  |  |  Entering solvable(null)
+    |  |  |  solvable(null) returns false
+    |  |  |  Entering solvable(null)
+    |  |  |  solvable(null) returns false
+    |  |  solvable(D) returns false
+    |  solvable(A) returns false
+    |  Entering solvable(B)
+    |  |  Entering solvable(E)
+    |  |  solvable(E) returns true
+    |  solvable(B) returns true
+    solvable(Root) returns true
+    true</b>
+</pre>
+<p>
+  <b>Trick #3: Never discard your debugging statements.</b> Writing debugging statements is programming, too. Often it's as much work to debug the debugging statements as it is to debug the actual program. Once your program is working, why throw this code away?</p>
+
 </body>
 </html>
