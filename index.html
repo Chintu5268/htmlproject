@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HTML Project</title>
   <style>
-    img {
+    .pic {
       margin-left: 500px;
     }
 
@@ -35,8 +35,9 @@
     that got you here, and try another choice at that node. If you end up at the root with no options left, there are no
     good leaves to be found.</p>
   <p>This needs an example.</p>
-  <img src="img/img1.gif" alt="Block Image">
-
+  <div class="pic">
+    <img src="img/img1.gif" alt="Block Image">
+  </div>
   <ol>
     <li>Starting at Root, your options are A and B</li>
     <li>You choose A. At A, your options are C and D. You choose C</li>
@@ -195,7 +196,9 @@ return false</pre>
     from the root node, and there are no cycles. For our purposes, although this is not part of the definition of a
     binary tree, we will say that a node might or might not be a goal node, and will contain its name. The first example
     in this paper (which we repeat here) shows a binary tree.</p>
-  <img src="img/img2.gif" alt="code">
+  <div class="pic">
+    <img src="img/img1.gif" alt="Block Image">
+  </div>
   <p>Here's a definition of the BinaryTree class:</p>
   <pre> public class BinaryTree {
       BinaryTree leftChild = null;
@@ -488,48 +491,28 @@ static boolean no(BinaryTree node) {
   </p>
   <br>
   <br>
-  <table border="1px" align="center" cellspacing="0" cellpadding="6">
-    <tbody>
-      <tr bg-color="silver">
-        <td width="44">
-          <img src="img/black-ball.gif" alt="black-ball">
-        </td>
-        <td width="44">
-        <img src="img/black-ball.gif" alt="">
-      </td>
-      <td>&nbsp;</td>
-      <td width="44">
-        <img src="img/white-ball.gif" alt="">
-      </td>
-      <td width="44">
-        <img src="img/white-ball.gif" alt="">
-      </td>
-      </tr>
-    </tbody>
-  </table>
-  <p>The goal is to reverse the positions of the marbles:</p>
-  <br>
-  <br>
-  <table border="1px" align="center">
-    <tbody>
-      <tr bg-color="silver">
-        <td width="44px">
-          <img src="img/black-ball.gif" alt="black-ball">
-        </td>
-        <!-- <td>
-        <img src="img/black-ball.gif" alt="">
-      </td>
-      <td>&nbsp;</td>
-      <td>
-        <img src="img/white-ball.gif" alt="">
-      </td>
-      <td>
-        <img src="img/white-ball.gif" alt="">
-      </td> -->
-      </tr>
-    </tbody>
+  <table align="center" border="1px" cellspacing="0" cellpadding="6" bgcolor="silver">
+    <tr>
+      <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+      <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+      <td width="44px"></td>
+      <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+      <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+    </tr>
   </table>
   <br>
+  <p>The goal is to reverse the positions of the marbles:
+  </p>
+  <br>
+  <table align="center" border="1px" cellspacing="0" cellpadding="6" bgcolor="silver">
+    <tr>
+      <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+      <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+      <td width="44px"></td>
+      <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+      <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+    </tr>
+  </table>
   <p>The black marbles can only move to the right, and the white marbles can only move to the left (no backing up). At
     each move, a marble can either:
 
@@ -540,8 +523,122 @@ static boolean no(BinaryTree node) {
     </li>
   </ul>
   <p>For example, you could make the following sequence of moves:</p>
-  <table></table>
+  <table align="center" cellpadding="20">
+    <tr>
+      <td><b>Starting position:</b></td>
+      <td>
+
+        <table border="1px" bgcolor="silver" cellspacing="0" cellpadding="6">
+          <tr>
+            <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+            <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+            <td width="44px"></td>
+            <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+            <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
   <br>
+  <table align="center" cellpadding="20">
+    <tr>
+      <td><b>Black moves ahead:</b></td>
+      <td>
+        <table border="1px" bgcolor="silver" cellspacing="0" cellpadding="6">
+          <tr>
+            <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+            <td width="44px"></td>
+            <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+            <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+            <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table align="center" cellpadding="20">
+    <tr>
+      <td><b>White jumps:</b></td>
+      <td>
+        
+          <table border="1px" bgcolor="silver" cellspacing="0" cellpadding="6"  >
+            <tr>
+              <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+              <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+                  <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+              <td width="44px"></td>
+                  <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+            </tr>
+           </table>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table align="center" cellpadding="20">
+    <tr>
+      <td><b>Black moves ahead:</b></td>
+      <td>
+        
+          <table border="1px" bgcolor="silver" cellspacing="0" cellpadding="6"  >
+            <tr>
+              <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+              <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+              <td width="44px"></td>
+                  <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+                  <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+            </tr>
+           </table>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table align="center" cellpadding="20">
+    <tr>
+      <td><b>Black jumps:</b></td>
+      <td>
+        
+          <table border="1px" bgcolor="silver" cellspacing="0" cellpadding="6"  >
+            <tr>
+              <td width="44px"></td>
+              <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+              <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+                  <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+                  <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+            </tr>
+           </table>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table align="center" cellpadding="20">
+    <tr>
+      <td><b>White moves ahead:</b></td>
+      <td>
+        
+          <table border="1px" bgcolor="silver" cellspacing="0" cellpadding="6"  >
+            <tr>
+              <td width="44px"></td>
+              <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+
+              <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+                  <td><img src="https://akarsh-gupta007.github.io/backtracking/black-ball.gif" alt=""></td>
+                  <td><img src="https://akarsh-gupta007.github.io/backtracking/white-ball.gif" alt=""></td>
+            </tr>
+           </table>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table align="center" cellpadding="50">
+    <tr>
+      <td><b>stucks</b></td>
+      
+    </tr>
+  </table>
+  <br>
+  
   <p>Now to the program. The main program will initialize the board, and call a recursive backtracking routine to
     attempt to solve the puzzle. The backtracking routine will either succeed and print out a winning path, or it will
     fail, and the main program will have to print out the bad news.</p>
@@ -611,6 +708,10 @@ static boolean no(BinaryTree node) {
 <span style="color:blue;">2.</span> <b>BLACK BLACK _____ BLACK WHITE WHITE WHITE</b>
 <span style="color:blue;">1.</span> <b>BLACK BLACK BLACK _____ WHITE WHITE WHITE</b>
 </pre>
-<p>Notice that the solution is given in reverse order: BLACK starts out on the left and WHITE on the right, as in the last line. I've added line numbers to the actual output in order to emphasize this point. Backtracking always produces its results (sequence of choices) in reverse order; it is up to you, the programmer, to reverse the results again to get them in the correct order.</p>
+  <p>Notice that the solution is given in reverse order: BLACK starts out on the left and WHITE on the right, as in the
+    last line. I've added line numbers to the actual output in order to emphasize this point. Backtracking always
+    produces its results (sequence of choices) in reverse order; it is up to you, the programmer, to reverse the results
+    again to get them in the correct order.</p>
 </body>
+
 </html>
